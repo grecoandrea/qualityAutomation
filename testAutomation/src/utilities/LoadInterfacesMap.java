@@ -13,7 +13,7 @@ public class LoadInterfacesMap {
 	WebDriver driver;
 
 	public LoadInterfacesMap() throws Exception{
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("InterfacesMap.properties");
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("main/resources/InterfacesMap.properties");
 		properties = new Properties();
 		try {
 			properties.load(inputStream);

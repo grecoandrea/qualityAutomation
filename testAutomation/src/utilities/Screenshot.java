@@ -18,33 +18,13 @@ public class Screenshot {
 	private static final DateFormat sdfFile = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 	private static final DateFormat sdfFolder = new SimpleDateFormat("yyyy-MM-dd");
 
-
-	public static void captureScreenShot(WebDriver driver){
-
-		File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);           
-
+	public static String capture(WebDriver driver) throws IOException {
 		Date date = new Date();
 		String dateNameFolder = sdfFolder.format(date);
 		String dateNameFile = sdfFile.format(date);
-
-		try {
-			FileUtils.copyFile(src, new File(System.getProperty("user.dir")+"/Report/ScreenshotsOnFailure_"+dateNameFolder+"/Error_"+dateNameFile+".png"));
-			String imageFileDir = System.getProperty("selenium.screenshot.dir");
-			if (imageFileDir == null)
-				imageFileDir = System.getProperty("java.io.tmpdir");
-			FileUtils.copyFile(src, new File(imageFileDir, "Error_"+dateNameFile+".png"));
-
-		} catch (IOException e) {
-			Log4jLogger.error("WARNING: Unable to create screenshot on failure...");
-			e.printStackTrace();
-		}                              
-
-	}
-	
-	public static String capture(WebDriver driver) throws IOException {
+		
 		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-		File Dest = new File("src/../Report/ScreenshotsExtentReport/" + System.currentTimeMillis()
-		+ ".png");
+		File Dest = new File("src/../Report/ScreenshotsOnFailure_"+dateNameFolder+"/Error_"+dateNameFile+".png");
 		String errflpath = Dest.getAbsolutePath();
 		FileUtils.copyFile(scrFile, Dest);
 		return errflpath;

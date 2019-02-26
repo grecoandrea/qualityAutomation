@@ -10,7 +10,7 @@ public class LoadConfigurations {
 	private Properties properties;
 
 	public LoadConfigurations(){
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("Configurations.properties");
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("main/resources/Configurations.properties");
 		properties = new Properties();
 		try {
 			properties.load(inputStream);

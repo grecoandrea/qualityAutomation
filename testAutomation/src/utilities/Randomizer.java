@@ -25,25 +25,13 @@ public class Randomizer {
 		return str;
 	}
 
-	protected String randomAddress() {
+	protected String randomValues() {
 		String addresses[];
 		addresses = new String[] {
-				"Via Aurelia 1",
-				"Via Cassia 100",
-				"Via Flaminia 1",
-				"Via Salaria 100",
-				"Via Tiburtina 1",
-				"Via Casilina 100",
-				"Via Appia 1",
-				"Via Nomentana 100",
-				"Via Prenestina 1",
-				"Via Anagnina 100",
-				"Via Ardeatina 1",
-				"Via Laurentina 100",
-				"Via Tuscolana 1",
-				"Via Portuense 100",
-				"Via Trionfale 1",
-				"Via Cornelia 100"
+				"panettone milanese",
+				"torta paradiso",
+				"focaccia genovese",
+				"pastiera napoletana"
 		};
 
 
@@ -60,61 +48,9 @@ public class Randomizer {
 
 	}
 	
-	protected String randomPhoneNumber() {
-		int Low = 1000000000;
-		int High = 1999999999;
-		return randomNumber(Low, High);
+	public String getRandomSearch() {
+		return randomValues();
 	}
-	
-	protected String randomResultInTable() {
-		int Low = 1;
-		int High = 19;
-		return randomNumber(Low, High);
-	}
-	
-	protected String randomMonth() {
-		int Low = 1;
-		int High = 9;
-		return randomNumber(Low, High);
-	}
-	
-	protected String randomDocument() {
-		int Low = 100;
-		int High = 10000;
-		return "DOC-"+randomNumber(Low, High);
-	}
-
-	protected String randomTax() {
-		int Low = 100;
-		int High = 10000;
-		return "TAX-"+randomNumber(Low, High);
-	}
-	
-	public String getRandomName() {
-		return "SEL-"+randomString();
-	}
-
-	
-	public String getRandomSurname() {
-		return "SEL-"+randomString();
-	}
-
-	public String getRandomDocument() {
-		return randomDocument();
-	}
-	
-	public String getRandomPhoneNumber() {
-		return randomPhoneNumber();
-	}
-
-	public String getRandomTax() {
-		return randomTax();
-	}
-	
-	public String getRandomAddress() {
-		return randomAddress();
-	}
-
 	
 	public String getRandomBirthdate() {
 		return randomBirthdate();
@@ -123,13 +59,6 @@ public class Randomizer {
 	public String getRandomString() {
 		return randomString();
 	}
-
-	public String getRandomResultInTable() {
-		return randomResultInTable();
-	}
-
-	public String getRandomMonth() {
-		return randomMonth();
-	}
+	
 	
 }

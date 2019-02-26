@@ -54,7 +54,6 @@ public class Logger {
 		Log4jLogger.error("ERROR in: '"+Thread.currentThread().getStackTrace()[2].getMethodName()+"' with Key: '"+key+"' and Value: '"+value+"'. ");
 		test.log(LogStatus.FAIL, "ERROR in: '"+Thread.currentThread().getStackTrace()[2].getMethodName()+"' with Key: '"+key+"' and Value: '"+value+"'. ");
 		test.log(LogStatus.INFO,test.addScreenCapture(Screenshot.capture(driver))+"Screenshot" );
-		Screenshot.captureScreenShot(driver);
 		failureLogs(e);
 	}
 	
@@ -62,24 +61,17 @@ public class Logger {
 		Log4jLogger.warn("WARNING in: '"+Thread.currentThread().getStackTrace()[2].getMethodName()+"' with Key: '"+key+"' and Value: '"+value+"'. ");
 		test.log(LogStatus.WARNING, "WARNING in: '"+Thread.currentThread().getStackTrace()[2].getMethodName()+"' with Key: '"+key+"' and Value: '"+value+"'. ");
 		test.log(LogStatus.WARNING,test.addScreenCapture(Screenshot.capture(driver))+"Screenshot" );
-		Screenshot.captureScreenShot(driver);
-		//failureLogs(e);
 	}
 	
 	public static void errorMultipleCommandLogs(String keyOne, String keyTwo, WebDriver driver, Exception e) throws Exception {
 		Log4jLogger.error("ERROR in: '"+Thread.currentThread().getStackTrace()[2].getMethodName()+"' with first Key: '"+keyOne+"' and second Key: '"+keyTwo+"'. ");
 		test.log(LogStatus.FAIL, "ERROR in: '"+Thread.currentThread().getStackTrace()[2].getMethodName()+"' with first Key: '"+keyOne+"' and second Key: '"+keyTwo+"'. ");
 		test.log(LogStatus.INFO,test.addScreenCapture(Screenshot.capture(driver))+"Screenshot" );
-		Screenshot.captureScreenShot(driver);
 		failureLogs(e);
 	}
 	
 	public static void createScreenshot(WebDriver driver) throws Exception {
-		//Log4jLogger.error("ERROR in: '"+Thread.currentThread().getStackTrace()[2].getMethodName()+"' with Key: '"+key+"' and Value: '"+value+"'. ");
-		//test.log(LogStatus.FAIL, "ERROR in: '"+Thread.currentThread().getStackTrace()[2].getMethodName()+"' with Key: '"+key+"' and Value: '"+value+"'. ");
 		test.log(LogStatus.INFO,test.addScreenCapture(Screenshot.capture(driver))+"Screenshot" );
-		Screenshot.captureScreenShot(driver);
-		//failureLogs(e);
 	}
 	
 	public static void createExtentReport(String testSuite) throws Exception {
@@ -95,7 +87,7 @@ public class Logger {
 	}
 	
 	public static void assignCategoryToSuite(String macroCategory, String microCategory) {
-		String micro = microCategory.substring(0, 7);
+		String micro = microCategory.substring(0, microCategory.length());
 		test.assignCategory(macroCategory, micro);
 	}
 }

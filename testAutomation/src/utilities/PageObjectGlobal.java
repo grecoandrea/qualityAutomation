@@ -22,7 +22,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 
 public class PageObjectGlobal {
 
-	public WebDriver driver;
+	public  WebDriver driver;
 	protected utilities.LoadConfigurations loadConfigurations;
 	protected utilities.LoadInterfacesMap loadInterfacesMap;
 	protected Screenshot screenshot;
@@ -39,15 +39,11 @@ public class PageObjectGlobal {
 		if (browserToOpen.equals("InternetExplorer")) {
 			System.setProperty("webdriver.ie.driver", System.getProperty("user.dir")+"/BrowsersConfig/IEDriverServer.exe");
 			DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
-			capabilities.setCapability(driver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			capabilities.setCapability(driver.NATIVE_EVENTS, false);
-			capabilities.setCapability(driver.REQUIRE_WINDOW_FOCUS, true);
-			capabilities.setCapability(driver.ENABLE_ELEMENT_CACHE_CLEANUP, true);
 			driver = new InternetExplorerDriver(capabilities);
 			driver.manage().timeouts().pageLoadTimeout(Long.valueOf(waitImplicit).longValue(), TimeUnit.SECONDS);
 			driver.manage().timeouts().implicitlyWait(Long.valueOf(waitImplicit).longValue(), TimeUnit.SECONDS);  
 		}
-		else if (browserToOpen.equals("Firefox")) {
+		if (browserToOpen.equals("Firefox")) {
 			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir")+"/BrowsersConfig/geckodriver.exe");
 			DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 			capabilities.setCapability("setAcceptUntrustedCertificates", true); 
@@ -131,20 +127,6 @@ public class PageObjectGlobal {
 		}
 	}
 	
-	protected void clickByIdProcessed(String element) throws Exception {
-		//String elementToClick = loadInterfacesMap.getInterface(element);
-		Logger.startCommandLogs(element, "Undefined");
-		try {
-			WebElement myDynamicElement = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.id(element)));
-			myDynamicElement.click();
-			waitForInteraction();
-		} catch (Exception e) {
-			Logger.errorCommandLogs(element, "Undefined", driver, e);
-			throw e;
-		}
-	}
-
 	protected void clickByVisibleText(String element) throws Exception {
 		String message = loadInterfacesMap.getInterface(element);
 		Logger.startCommandLogs(element, message);
@@ -182,26 +164,6 @@ public class PageObjectGlobal {
 		}
 	}
 
-	protected void selectRandomValueIntoATable(String element, String values) throws Exception {
-		String elementToClick = loadInterfacesMap.getInterface(element);
-		String allvalues = loadInterfacesMap.getInterface(values);
-		Logger.startMultipleCommandLogs(element, values);
-		try {
-			Random random = new Random();
-			String[] optionList = allvalues.split(",");
-			int randomIndex = random.nextInt(optionList.length); 
-			String optionToChoice = optionList[randomIndex];
-			String elementToSearch = "//table[@id='"+elementToClick+"']//tbody/tr/td[2]/div [contains(text(), '"+optionToChoice+"')]"; 												
-			WebElement myDynamicElement = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.xpath(elementToSearch)));
-			myDynamicElement.click();
-			waitForInteraction();
-		} catch (Exception e) {
-			Logger.errorMultipleCommandLogs(element, values, driver, e);
-			throw e;
-		}
-	}
-		
 	protected void comboboxValueByXpath(String elementId, String option) throws Exception {
 		String comboId = loadInterfacesMap.getInterface(elementId);
 		String comboValue = loadInterfacesMap.getInterface(option);
@@ -311,50 +273,6 @@ public class PageObjectGlobal {
 		}
 	}
 
-	protected void runValidSearch(String searchButton, String resultPosition, String searchedText) throws Exception {
-		String startSearchButton = loadInterfacesMap.getInterface(searchButton);
-		String resultPositionTable = loadInterfacesMap.getInterface(resultPosition);
-		String resultToSearch = "//div[@title='"+searchedText+"']";
-		Logger.startMultipleCommandLogs(searchButton, searchedText);
-		try {
-			WebElement myDynamicElement = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.id(startSearchButton)));
-			myDynamicElement.click();
-			waitForInteraction();
-			
-			WebElement myDynamicElementTable = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.id(resultPositionTable)));
-			myDynamicElementTable.isDisplayed();
-
-			WebElement myDynamicElementResults = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.xpath(resultToSearch)));
-			myDynamicElementResults.isDisplayed();
-			myDynamicElementResults.click();
-			waitForInteraction();
-		} catch (Exception e) {
-			Logger.errorMultipleCommandLogs(searchButton, searchedText, driver, e);
-			throw e;
-		}
-	}
-
-	protected void runNotValidSearch(String searchButton, String resultPosition, String searchedText) throws Exception {
-		String startSearchButton = loadInterfacesMap.getInterface(searchButton);
-		String resultPositionTable = loadInterfacesMap.getInterface(resultPosition);
-		Logger.startMultipleCommandLogs(searchButton, searchedText);
-		try {
-			WebElement myDynamicElement = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.id(startSearchButton)));
-			myDynamicElement.click();
-			waitForInteraction();
-			Boolean myDynamicElementTable = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id(resultPositionTable))));
-			Assert.assertTrue(myDynamicElementTable);
-		} catch (Exception e) {
-			Logger.errorMultipleCommandLogs(searchButton, searchedText, driver, e);
-			throw e;
-		}
-	}
-
 	protected void waitForInteraction() throws Exception {
 		ExpectedCondition<Boolean> expectation = new
 				ExpectedCondition<Boolean>() {
@@ -444,7 +362,7 @@ public class PageObjectGlobal {
 		Logger.startCommandLogs("Undefined", element);
 		boolean check = false ;
 		try {
-			String elementToSearch = "//div[contains(text(), '"+element+"')]";
+			String elementToSearch = "//*[contains(text(), '"+element+"')]";
 			WebElement myDynamicElement = (new WebDriverWait(driver, 10))
 					.until(ExpectedConditions.elementToBeClickable(By.xpath(elementToSearch)));
 			myDynamicElement.isDisplayed();
@@ -510,24 +428,6 @@ public class PageObjectGlobal {
 		}
 	}
 
-	protected void setDate(String position, String date) throws Exception {
-		String datePosition = loadInterfacesMap.getInterface(position);
-		Logger.startMultipleCommandLogs(position, date);
-		try {
-			WebElement myDynamicElement = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.id(datePosition)));
-			myDynamicElement.click();
-			myDynamicElement.getText();
-			waitForInteraction();
-			myDynamicElement.isEnabled();
-			myDynamicElement.isDisplayed();
-			myDynamicElement.sendKeys(date);
-		} catch (Exception e) {
-			Logger.errorCommandLogs(position, date, driver, e);
-			throw e;
-		}
-	}
-
 	protected void deleteContent(String element) throws Exception {
 		String keyToSearch = loadInterfacesMap.getInterface(element);
 		Logger.startCommandLogs(element, keyToSearch);
@@ -543,198 +443,6 @@ public class PageObjectGlobal {
 			Logger.errorCommandLogs(element, keyToSearch, driver, e);
 			throw e;
 		}
-	}
-		
-	protected String storeText(String element) throws Exception
-	{
-		WebElement myDynamicElement;
-		String textToSave= null;
-
-		String elementToClick = loadInterfacesMap.getInterface(element);
-		Logger.startCommandLogs(element, elementToClick);
-		try {
-			if (elementToClick.contains("//")) {
-				myDynamicElement = (new WebDriverWait(driver, 10))
-						.until(ExpectedConditions.elementToBeClickable(By.xpath(elementToClick)));
-				waitForInteraction();
-			}
-			else {
-				myDynamicElement = (new WebDriverWait(driver, 10))
-						.until(ExpectedConditions.elementToBeClickable(By.id(elementToClick)));
-				waitForInteraction();	
-			}	
-			myDynamicElement.click();
-			textToSave= myDynamicElement.getText();
-			waitForInteraction();
-		} catch (Exception e) {
-			Logger.errorCommandLogs(element, elementToClick, driver, e);
-			throw e;
-		}
-
-		return textToSave;
-	}
-	
-	protected void retrieveTextStored(String element) throws Exception
-	{
-		WebElement myDynamicElement;		
-		String message="//div[contains(text(),'"+element+"')]";
-		Logger.startCommandLogs("Undefined", element);
-		try {
-				myDynamicElement = (new WebDriverWait(driver, 10))
-						.until(ExpectedConditions.elementToBeClickable(By.xpath(message)));	
-				myDynamicElement.click();
-				waitForInteraction();		
-			}
-		 catch (Exception e) {
-			Logger.errorCommandLogs("Undefined", element, driver, e);
-			throw e;
-		}
-
-	}
-	
-	protected boolean checkStringPresent(String element) throws Exception {
-		String message = loadInterfacesMap.getInterface(element);
-		Logger.startCommandLogs(element, message);
-		boolean check = false ;
-		try {
-			String elementToSearch = "//div[contains(text(), '"+message+"')]";
-			WebElement myDynamicElement = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.xpath(elementToSearch)));
-			myDynamicElement.isDisplayed();
-			String textFound = myDynamicElement.getText();
-			check = textFound.equals(message);
-			check=true;
-		} 
-		catch (Exception e) {
-			Logger.warningCommandLogs(element, message, driver);
-			check=false;
-		}
-		return check;
-	}
-	
-	
-	
-	protected boolean checkButtonDisabled(String element) throws Exception {
-		String message = loadInterfacesMap.getInterface(element);
-		Logger.startCommandLogs(element, message);
-		boolean check = false ;
-		try {
-			String elementToSearch = "//button[@id='"+message+"'] and //button[@disabled]";	
-			WebElement myDynamicElement = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.xpath(elementToSearch)));
-			myDynamicElement.isDisplayed();
-			check = myDynamicElement.isEnabled();
-			if(check = myDynamicElement.isEnabled())
-			check=true;
-		} 
-		catch (Exception e) {
-			Logger.warningCommandLogs(element, message, driver);	
-			check=false;
-		}
-		return check;
-	}
-	
-	protected String retrieveLoggedUser() throws Exception
-	{
-		WebElement myDynamicElement;
-		String message="//tr/td[contains(text(),'CE Branch')]";
-		Logger.startCommandLogs("Undefined", message);
-		String textFound;
-		try
-		{
-			 myDynamicElement = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.xpath(message)));
-		 
-			 myDynamicElement.isDisplayed();
-				 textFound = myDynamicElement.getText().substring(0, 4);
-			waitForInteraction();	
-		}
-		
-		catch (Exception e) {
-			Logger.errorCommandLogs("Undefined", message, driver, e);
-			throw e;
-		}
-		return textFound;
-	}
-	
-	
-	protected int getRowsNumberInTable(String tableName, String firstCellName, String pairCellName, String notPairCellName) throws Exception
-	{
-		int rowsNumber=0;
-		Logger.startMultipleCommandLogs(tableName, pairCellName);
-		try {
-			String tableNameId = loadInterfacesMap.getInterface(tableName);
-			String firstCellNameId=loadInterfacesMap.getInterface(firstCellName);
-			String cellNamePairId = loadInterfacesMap.getInterface(pairCellName);
-			String cellNameNotPairId = loadInterfacesMap.getInterface(notPairCellName);
-			
-			List<WebElement> rows = driver.findElements(By.xpath("//*[@*='"+tableNameId+"']//tr[@*='"+firstCellNameId+"' or @*='"+cellNamePairId+"' or @*='"+cellNameNotPairId+"']"));
-			rowsNumber = rows.size();
-			waitForInteraction();
-		}
-		catch (Exception e) {
-			Logger.errorMultipleCommandLogs(tableName, pairCellName, driver, e);
-			throw e;
-		}
-		
-		return rowsNumber;
-	}
-		
-	protected String selectRandomRowInTable(String tableName, String firstCellName, String pairCellName, String notPairCellName , String field) throws Exception
-	{
-		String text=null;
-		Logger.startMultipleCommandLogs(tableName, field);
-		try {
-			String tableNameId = loadInterfacesMap.getInterface(tableName);
-//			String cellNamePairId = loadInterfacesMap.getInterface(pairCellName);
-//			String cellNameNotPairId = loadInterfacesMap.getInterface(notPairCellName);
-			String fieldId=loadInterfacesMap.getInterface(field);
-			Random random = new Random();
-	//		List<WebElement> rows = driver.findElements(By.xpath("//*[@class='"+tableNameId+"']//tr[@class='"+cellNamePairId+"' or @class='"+cellNameNotPairId+"']"));
-			//int locatorElementSize = rows.size();
-			int locatorElementSize = getRowsNumberInTable(tableName, firstCellName, pairCellName,notPairCellName);
-									 
-			//System.out.println("rows number: "+ locatorElementSize);
-			int randomElement = random.nextInt(locatorElementSize);
-			if (randomElement == 0) {
-				randomElement = randomElement + 1;
-			}
-			else if(randomElement == locatorElementSize)
-			{
-				randomElement= randomElement-1;
-			}		
-			//System.out.println("row selected number: "+ randomElement);			
-			WebElement myDynamicElementSelection = (new WebDriverWait(driver, 10))
-					.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@*='"+tableNameId+"']//*[@id='"+fieldId+"."+randomElement+"']")))	;
-			 myDynamicElementSelection.click();
-			 text = myDynamicElementSelection.getText();
-			 waitForInteraction();
-			
-		} 
-		catch (Exception e) {
-			Logger.errorMultipleCommandLogs(tableName, field, driver, e);
-			throw e;
-		}
-		
-		return text;
-	}
-	
-	protected void logoutCCMS() throws Exception {
-		waitForInteraction();
-		clickByVisibleText("LOG_OFF");
-		//verifyElementPresentById("USER_FIELD");
-		//verifyElementPresentById("PASSWORD_FIELD");
-		//verifyTextPresent("CORNER_CARD_EUROPE");
-		verifyTextPresent("LOGGED_OUT_TEXT");
-	}
-
-	protected void loginCCMS() throws Exception {
-		openBrowser("DEFAULT_BROWSER");
-		openPage("DEFAULT_URL");
-	//	login("DEFAULT_USERNAME", "DEFAULT_PASSWORD");
-		clickByVisibleText("CORNER_CARD_EUROPE");
-		verifyElementPresent("BUTTON_CONFIRM");
-		click("BUTTON_CONFIRM");
 	}
 	
 }
